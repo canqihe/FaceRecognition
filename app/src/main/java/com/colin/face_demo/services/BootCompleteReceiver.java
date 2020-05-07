@@ -9,6 +9,7 @@ import com.colin.face_demo.MainActivity;
 /**
  * Created by Colin
  * on 2020/5/5
+ * 开机监听广播
  * E-mail: hecanqi168@gmail.com
  */
 public class BootCompleteReceiver extends BroadcastReceiver {

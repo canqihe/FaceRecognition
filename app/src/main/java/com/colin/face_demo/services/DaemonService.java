@@ -25,8 +25,9 @@ import fi.iki.elonen.NanoHTTPD;
 public class DaemonService extends Service {
     private static final String TAG = "DaemonService";
     public static final int NOTICE_ID = 100;
-    String CHANNEL_ONE_ID = "com.primedu.cn";
-    String CHANNEL_ONE_NAME = "Channel One";
+    private String CHANNEL_ONE_ID = "com.primedu.cn";
+    private String CHANNEL_ONE_NAME = "Channel One";
+    private SimpleServer server;
 
     @Nullable
     @Override
@@ -47,6 +48,7 @@ public class DaemonService extends Service {
             builder.setContentTitle("楚越科技");
             builder.setContentText("人脸检测服务运行中...");
 
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 //修改安卓8.1以上系统报错
                 NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ONE_ID, CHANNEL_ONE_NAME, NotificationManager.IMPORTANCE_MIN);
@@ -61,20 +63,20 @@ public class DaemonService extends Service {
         } else {
             startForeground(NOTICE_ID, new Notification());
         }
-
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         try {
-            SimpleServer server = new SimpleServer(8999);
-            server.start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
-            Log.i("数据Httpd：", "The server started.成功");
-            sendBroadcast(new Intent(Contants.START_SUCCESSFUL));
+            if (server == null) {
+                server = new SimpleServer(8999);
+                server.start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
+                Log.i("数据Httpd：", "The server started.成功");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             Log.i("数据Httpd：", "The server started.失败\n" + e);
-            sendBroadcast(new Intent(Contants.START_SUCCESSFUL));
+            sendBroadcast(new Intent(Contants.START_FAILED));
             System.exit(-1);
         }
 
@@ -87,6 +89,14 @@ public class DaemonService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        if (server != null) {
+            server.closeAllConnections();
+            server.stop();
+            server = null;
+            Log.i("数据Httpd：", "The server 销毁");
+        }
+
         // 如果Service被杀死，干掉通知
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             NotificationManager mManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

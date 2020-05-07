@@ -27,17 +27,13 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.device_info)
     TextView deviceInfo;
 
-    private SimpleServer server;
     private static final int EXTERNAL_STORAGE = 7;
 
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(Contants.START_SUCCESSFUL)) {
-                serverTx.setTextColor(Color.RED);
-            } else {
-                serverTx.setTextColor(Color.GRAY);
-            }
+            if (intent.getAction().equals(Contants.START_FAILED))
+                serverTx.setTextColor(Color.BLACK);
         }
     };
 
@@ -46,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Contants.START_SUCCESSFUL);
         intentFilter.addAction(Contants.START_FAILED);
         registerReceiver(broadcastReceiver, intentFilter);
     }
@@ -59,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
 //        permissionStorage();//权限管理
+
         Intent intent = new Intent(this, DaemonService.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(intent);
@@ -116,10 +112,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (server != null) {
-            server.closeAllConnections();
-            server.stop();
-        }
         if (broadcastReceiver != null) {
             unregisterReceiver(broadcastReceiver);
         }
