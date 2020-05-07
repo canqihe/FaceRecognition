@@ -1,4 +1,4 @@
-package com.colin.face_demo.bean;
+package com.colin.face.bean;
 
 import java.io.Serializable;
 

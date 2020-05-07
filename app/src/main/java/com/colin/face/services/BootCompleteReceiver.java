@@ -1,10 +1,10 @@
-package com.colin.face_demo.services;
+package com.colin.face.services;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.colin.face_demo.MainActivity;
+import com.colin.face.MainActivity;
 
 /**
  * Created by Colin

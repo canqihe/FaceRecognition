@@ -1,4 +1,4 @@
-package com.colin.face_demo.util;
+package com.colin.face.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;

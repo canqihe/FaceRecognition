@@ -2,22 +2,30 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 28
-
-
     defaultConfig {
-        applicationId "com.colin.face_demo"
+        applicationId "com.colin.face"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0"
+        versionName "1.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            keyAlias 'key0'
+            keyPassword '111111'
+            storeFile file('face.jks')
+            storePassword '111111'
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     lintOptions {
@@ -43,12 +51,11 @@ dependencies {
     // 黄油刀
     implementation 'com.jakewharton:butterknife:10.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
+
     implementation 'org.nanohttpd:nanohttpd:2.2.0'
     implementation 'com.alibaba:fastjson:1.2.61'
 
     implementation files('libs/SmdtAccessControl.jar')
-    //EventBus
-    implementation 'org.greenrobot:eventbus:3.1.1'
     //SerialPort
     implementation 'com.github.F1ReKing:Android-SerialPort:1.5.1'
 

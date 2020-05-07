@@ -1,4 +1,4 @@
-package com.colin.face_demo;
+package com.colin.face;
 
 import org.junit.Test;
 

@@ -1,12 +1,12 @@
-package com.colin.face_demo.server;
+package com.colin.face.server;
 
 import android.util.Log;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
-import com.colin.face_demo.FaceChekApplication;
-import com.colin.face_demo.bean.PersonInfo;
-import com.colin.face_demo.util.Contants;
+import com.colin.face.FaceChekApplication;
+import com.colin.face.bean.PersonInfo;
+import com.colin.face.util.Contants;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,7 +54,6 @@ public class SimpleServer extends NanoHTTPD {
         try {
             session.parseBody(files);
             String param = files.get("postData");
-
             /*Log.d("数据：", "header : " + session.getHeaders());
             Log.d("数据：", "files : " + session.getParms());
             Log.d("数据：", "param : " + param);*/

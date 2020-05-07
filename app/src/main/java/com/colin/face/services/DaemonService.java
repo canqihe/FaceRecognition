@@ -1,4 +1,4 @@
-package com.colin.face_demo.services;
+package com.colin.face.services;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -9,9 +9,9 @@ import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.colin.face_demo.R;
-import com.colin.face_demo.server.SimpleServer;
-import com.colin.face_demo.util.Contants;
+import com.colin.face.R;
+import com.colin.face.server.SimpleServer;
+import com.colin.face.util.Contants;
 
 import androidx.annotation.Nullable;
 import fi.iki.elonen.NanoHTTPD;
@@ -102,13 +102,6 @@ public class DaemonService extends Service {
             NotificationManager mManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             mManager.cancel(NOTICE_ID);
         }
-        if (Contants.DEBUG)
-            Log.d(TAG, "DaemonService---->onDestroy，前台service被杀死");
-
-        // 重启Activity
-//        Intent intent = new Intent(this, MainActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        this.startActivity(intent);
 
         // 重启自己
         Intent intent = new Intent(getApplicationContext(), DaemonService.class);

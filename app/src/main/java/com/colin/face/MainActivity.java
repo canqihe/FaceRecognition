@@ -1,4 +1,4 @@
-package com.colin.face_demo;
+package com.colin.face;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,9 +10,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.colin.face_demo.server.SimpleServer;
-import com.colin.face_demo.services.DaemonService;
-import com.colin.face_demo.util.Contants;
+import com.colin.face.services.DaemonService;
+import com.colin.face.util.Contants;
+import com.colin.face.util.GeneralUtils;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Contants.START_FAILED);
         registerReceiver(broadcastReceiver, intentFilter);
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
