@@ -66,7 +66,6 @@ public class SimpleServer extends NanoHTTPD {
             //体温检测
             checkTemperature(personTemperature, personInfo);
 
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -144,11 +143,14 @@ public class SimpleServer extends NanoHTTPD {
 
 
         mSerialPortHelper.setISerialPortDataListener(new ISerialPortDataListener() {
+            //接收数据回调
             @Override
             public void onDataReceived(byte[] bytes) {
                 Log.i("数据", "onDataReceived: " + Arrays.toString(bytes));
             }
 
+
+            //发送数据回调
             @Override
             public void onDataSend(byte[] bytes) {
                 Log.i("数据", "onDataSend: " + Arrays.toString(bytes));

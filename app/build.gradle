@@ -58,5 +58,7 @@ dependencies {
     implementation files('libs/SmdtAccessControl.jar')
     //SerialPort
     implementation 'com.github.F1ReKing:Android-SerialPort:1.5.1'
+    //网络库 封装RXjava2+Retrofit+okhttp
+    implementation 'com.zhouyou:rxeasyhttp:2.1.5'
 
 }

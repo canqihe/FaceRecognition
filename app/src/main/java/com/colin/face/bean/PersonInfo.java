@@ -9,7 +9,7 @@ import java.io.Serializable;
  * Copyright (C) 2018 SSZB, Inc.
  */
 public class PersonInfo implements Serializable {
-
+    private static volatile PersonInfo personInfo;
     public String mac;
     public String userId;
     public long checkTime;
@@ -21,6 +21,44 @@ public class PersonInfo implements Serializable {
     public int mask;
     public String checkPic;
     public String extra;
+    public int id;
+    public int plotId;
+    public int visitId;
+
+    public static PersonInfo getInstance() {
+        if (personInfo == null) {
+            synchronized (PersonInfo.class) {
+                if (personInfo == null) {
+                    personInfo = new PersonInfo();
+                }
+            }
+        }
+        return personInfo;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getPlotId() {
+        return plotId;
+    }
+
+    public void setPlotId(int plotId) {
+        this.plotId = plotId;
+    }
+
+    public int getVisitId() {
+        return visitId;
+    }
+
+    public void setVisitId(int visitId) {
+        this.visitId = visitId;
+    }
 
     public String getMac() {
         return mac;
