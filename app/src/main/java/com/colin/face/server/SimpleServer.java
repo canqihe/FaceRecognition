@@ -6,7 +6,11 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSONObject;
 import com.colin.face.FaceChekApplication;
 import com.colin.face.bean.PersonInfo;
+import com.colin.face.util.Constant;
 import com.colin.face.util.Contants;
+import com.zhouyou.http.EasyHttp;
+import com.zhouyou.http.callback.SimpleCallBack;
+import com.zhouyou.http.exception.ApiException;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +27,7 @@ import me.f1reking.serialportlib.entity.STOPB;
 import me.f1reking.serialportlib.listener.IOpenSerialPortListener;
 import me.f1reking.serialportlib.listener.ISerialPortDataListener;
 import me.f1reking.serialportlib.listener.Status;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by Colin
@@ -54,14 +59,11 @@ public class SimpleServer extends NanoHTTPD {
         try {
             session.parseBody(files);
             String param = files.get("postData");
-            /*Log.d("数据：", "header : " + session.getHeaders());
-            Log.d("数据：", "files : " + session.getParms());
-            Log.d("数据：", "param : " + param);*/
 
             PersonInfo personInfo = JSONObject.parseObject(param, PersonInfo.class);
-            Log.d("数据，userId：", personInfo.getUserId());
-            Log.d("数据，姓名：", personInfo.getName());
-            Log.d("数据，体温：", personInfo.getTemperature());
+            Log.d("数据，", "userId：" + personInfo.getUserId()
+                    + " 姓名：" + personInfo.getName()
+                    + " 体温：" + personInfo.getTemperature());
             Double personTemperature = Double.parseDouble(personInfo.getTemperature());
             //体温检测
             checkTemperature(personTemperature, personInfo);
@@ -81,21 +83,53 @@ public class SimpleServer extends NanoHTTPD {
      */
     public void checkTemperature(Double personTemperature, PersonInfo personInfo) {
         if (personTemperature > Contants.TEMPERATURE) {
+
+            reportInfo(personInfo);
+
             //当前ID有过超标记录
-            if (personInfo.getUserId().equals(checkUserId)) {
+           /* if (personInfo.getUserId().equals(checkUserId)) {
                 checkCount = checkCount + 2;
                 Log.d("数据，次数---------：", checkCount + "次");
                 if (checkCount >= 3) {
                     checkCount = 0;
                     checkUserId = "0";
-                    Log.d("数据：", "New coronavirus waring！！！！！！！！！！");
+                    reportInfo(personInfo);
                 }
             } else {
                 //第一次记录ID
                 checkUserId = personInfo.getUserId();
                 checkCount = 0;
-            }
+            }*/
         }
+    }
+
+    public void reportInfo(PersonInfo p) {
+        PersonInfo personInfo = PersonInfo.getInstance();
+        personInfo.setCheckTime(p.getCheckTime());
+        personInfo.setId(p.getId());
+        personInfo.setMask(p.getMask());
+        personInfo.setName(p.getName());
+        personInfo.setPlotId(1);
+        personInfo.setTemperature(p.getTemperature());
+        personInfo.setUserId(p.getUserId());
+        personInfo.setVisitId(1);
+
+        EasyHttp
+                .post(Constant.ADD_TEMPRATURE)
+                .baseUrl(Constant.BASE_URL)
+                .upObject(personInfo)
+                .addConverterFactory(GsonConverterFactory.create())
+                .execute(new SimpleCallBack<String>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        Log.d("数据：访问异常：", e.toString());
+                    }
+
+                    @Override
+                    public void onSuccess(String result) {
+                        Log.d("数据：已上报体温预警", result);
+                    }
+                });
     }
 
 

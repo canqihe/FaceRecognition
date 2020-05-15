@@ -82,44 +82,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getDeviceInfo() {
-//        StringBuffer sb = new StringBuffer();
-//        try {
-//            sb.append("系统信息：" + FaceChekApplication.getInstance().smdt.smdtGetAPIVersion() + "\n");
-//            sb.append("设备硬件存储大小：" + FaceChekApplication.getInstance().smdt.getInternalStorageMemory() + "\n");
-//            sb.append("设备以太网IP地址：" + FaceChekApplication.getInstance().smdt.smdtGetEthIPAddress() + "\n");
-//            sb.append("设备SD卡路径：" + FaceChekApplication.getInstance().smdt.smdtGetSDcardPath(this) + "\n");
-//        } catch (Exception e) {
-//            sb.append(e.toString());
-//            e.printStackTrace();
-//        }
-//        deviceInfo.setText(sb.toString());
-
-        PersonInfo personInfo = PersonInfo.getInstance();
-        personInfo.setCheckTime(System.currentTimeMillis());
-        personInfo.setId(2);
-        personInfo.setMask(1);
-        personInfo.setName("王小五");
-        personInfo.setPlotId(4);
-        personInfo.setTemperature("36.8");
-        personInfo.setUserId("3");
-        personInfo.setVisitId(1);
-
-        EasyHttp
-                .post(Constant.ADD_TEMPRATURE)
-                .baseUrl(Constant.BASE_URL)
-                .upObject(personInfo)
-                .addConverterFactory(GsonConverterFactory.create())
-                .execute(new SimpleCallBack<String>() {
-                    @Override
-                    public void onError(ApiException e) {
-                        Toast.makeText(MainActivity.this, "访问异常", Toast.LENGTH_SHORT).show();
-                    }
-                    @Override
-                    public void onSuccess(String result) {
-                        Log.d("数据：", result);
-                    }
-                });
-
+       /* StringBuffer sb = new StringBuffer();
+        try {
+            sb.append("系统信息：" + FaceChekApplication.getInstance().smdt.smdtGetAPIVersion() + "\n");
+            sb.append("设备硬件存储大小：" + FaceChekApplication.getInstance().smdt.getInternalStorageMemory() + "\n");
+            sb.append("设备以太网IP地址：" + FaceChekApplication.getInstance().smdt.smdtGetEthIPAddress() + "\n");
+            sb.append("设备SD卡路径：" + FaceChekApplication.getInstance().smdt.smdtGetSDcardPath(this) + "\n");
+        } catch (Exception e) {
+            sb.append(e.toString());
+            e.printStackTrace();
+        }
+        deviceInfo.setText(sb.toString());*/
     }
 
     /*private void permissionStorage() {

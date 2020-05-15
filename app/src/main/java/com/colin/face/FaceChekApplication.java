@@ -15,8 +15,6 @@ public class FaceChekApplication extends Application {
 
     public volatile static FaceChekApplication mApplication;
 
-//    public static SmdtManager smdt;
-
     public FaceChekApplication() {
     }
 
@@ -33,7 +31,6 @@ public class FaceChekApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-//        smdt = SmdtManager.create(this);
 
         EasyHttp.init(this);
         EasyHttp.getInstance()
