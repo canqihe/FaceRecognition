@@ -84,10 +84,8 @@ public class SimpleServer extends NanoHTTPD {
     public void checkTemperature(Double personTemperature, PersonInfo personInfo) {
         if (personTemperature > Contants.TEMPERATURE) {
 
-            reportInfo(personInfo);
-
             //当前ID有过超标记录
-           /* if (personInfo.getUserId().equals(checkUserId)) {
+            if (personInfo.getUserId().equals(checkUserId)) {
                 checkCount = checkCount + 2;
                 Log.d("数据，次数---------：", checkCount + "次");
                 if (checkCount >= 3) {
@@ -99,7 +97,7 @@ public class SimpleServer extends NanoHTTPD {
                 //第一次记录ID
                 checkUserId = personInfo.getUserId();
                 checkCount = 0;
-            }*/
+            }
         }
     }
 
@@ -183,7 +181,6 @@ public class SimpleServer extends NanoHTTPD {
                 Log.i("数据", "onDataReceived: " + Arrays.toString(bytes));
             }
 
-
             //发送数据回调
             @Override
             public void onDataSend(byte[] bytes) {
@@ -191,7 +188,6 @@ public class SimpleServer extends NanoHTTPD {
             }
         });
         Log.i("数据", "open: " + mSerialPortHelper.open());
-
     }
 
 

@@ -9,11 +9,9 @@ public class Contants {
 
     public static final boolean DEBUG = true;
 
-    public static Double TEMPERATURE = 36.1;//正常体温
-
-    public static final String PACKAGE_NAME = "com.jiangdg.keepappalive";
-
+    public static Double TEMPERATURE = 37.3;//正常体温
 
     public static String START_SUCCESSFUL = "START_SUCCESSFUL";
+
     public static String START_FAILED = "START_FAILED";
 }
