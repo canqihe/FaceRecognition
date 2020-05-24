@@ -5,15 +5,15 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.colin.face.FaceChekApplication;
+import com.colin.face.bean.FaceInfo;
 import com.colin.face.bean.PersonInfo;
-import com.colin.face.util.Constant;
 import com.colin.face.util.Contants;
+import com.colin.face.util.NetWorkUtils;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.callback.SimpleCallBack;
 import com.zhouyou.http.exception.ApiException;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,17 +44,8 @@ public class SimpleServer extends NanoHTTPD {
         super(port);
     }
 
-    public static void main(String[] args) {
-        try {
-            new SimpleServer(8999).start(10000, false);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public Response serve(IHTTPSession session) {
-
         Map<String, String> files = new HashMap<>();
         try {
             session.parseBody(files);
@@ -82,12 +73,12 @@ public class SimpleServer extends NanoHTTPD {
      * @param personInfo
      */
     public void checkTemperature(Double personTemperature, PersonInfo personInfo) {
+        //温度超标
         if (personTemperature > Contants.TEMPERATURE) {
-
             //当前ID有过超标记录
             if (personInfo.getUserId().equals(checkUserId)) {
                 checkCount = checkCount + 2;
-                Log.d("数据，次数---------：", checkCount + "次");
+                Log.d("数据，次数-------：", checkCount + "次");
                 if (checkCount >= 3) {
                     checkCount = 0;
                     checkUserId = "0";
@@ -98,9 +89,12 @@ public class SimpleServer extends NanoHTTPD {
                 checkUserId = personInfo.getUserId();
                 checkCount = 0;
             }
+        } else {
+            faceCOntroller(personInfo);
         }
     }
 
+    //体温报警
     public void reportInfo(PersonInfo p) {
         PersonInfo personInfo = PersonInfo.getInstance();
         personInfo.setCheckTime(p.getCheckTime());
@@ -113,8 +107,8 @@ public class SimpleServer extends NanoHTTPD {
         personInfo.setVisitId(1);
 
         EasyHttp
-                .post(Constant.ADD_TEMPRATURE)
-                .baseUrl(Constant.BASE_URL)
+                .post(Contants.ADD_TEMPRATURE)
+                .baseUrl(Contants.BASE_URL)
                 .upObject(personInfo)
                 .addConverterFactory(GsonConverterFactory.create())
                 .execute(new SimpleCallBack<String>() {
@@ -126,6 +120,28 @@ public class SimpleServer extends NanoHTTPD {
                     @Override
                     public void onSuccess(String result) {
                         Log.d("数据：已上报体温预警", result);
+                    }
+                });
+    }
+
+
+    //人脸控制类
+    public void faceCOntroller(PersonInfo p) {
+        EasyHttp
+                .post(Contants.FACE_CONTROLLER)
+                .baseUrl(Contants.BASE_URL)
+                .params("userId", p.getUserId())
+                .accessToken(true)
+                .timeStamp(true)
+                .execute(new SimpleCallBack<String>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        Log.d("数据：访问异常：", e.toString());
+                    }
+
+                    @Override
+                    public void onSuccess(String result) {
+                        Log.d("数据：成功", result);
                     }
                 });
     }

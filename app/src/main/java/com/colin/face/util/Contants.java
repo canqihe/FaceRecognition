@@ -14,4 +14,12 @@ public class Contants {
     public static String START_SUCCESSFUL = "START_SUCCESSFUL";
 
     public static String START_FAILED = "START_FAILED";
+    //baseurl
+    public static final String BASE_URL = "http://device.titigo.top";
+    //提交温度预警
+    public static final String ADD_TEMPRATURE = "/elevator-web/base/temperature/add";
+    //设备控制器类
+    public static final String DEVICE_CONTROLLER = "/elevator-web/device/regist";
+    //人脸控制器类
+    public static final String FACE_CONTROLLER = "/elevator-web/base/face/call";
 }

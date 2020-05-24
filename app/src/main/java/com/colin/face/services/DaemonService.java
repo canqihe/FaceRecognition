@@ -16,7 +16,6 @@ import com.colin.face.util.Contants;
 import androidx.annotation.Nullable;
 import fi.iki.elonen.NanoHTTPD;
 
-
 /**
  * 前台Service，使用startForeground
  * 这个Service尽量要轻，不要占用过多的系统资源，否则

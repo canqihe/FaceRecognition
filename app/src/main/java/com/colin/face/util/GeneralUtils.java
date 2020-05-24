@@ -1,6 +1,8 @@
 package com.colin.face.util;
 
+import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
