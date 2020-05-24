@@ -6,9 +6,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.util.Log;
-
-import com.colin.face.FaceChekApplication;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -38,51 +35,17 @@ public class NetWorkUtils {
         return false;
     }
 
-    /**
-     * 将ip的整数形式转换成ip形式
-     *
-     * @param ipInt
-     * @return
-     */
-    public static String int2ip(int ipInt) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(ipInt & 0xFF).append(".");
-        sb.append((ipInt >> 8) & 0xFF).append(".");
-        sb.append((ipInt >> 16) & 0xFF).append(".");
-        sb.append((ipInt >> 24) & 0xFF);
-        return sb.toString();
-    }
-
-    /**
-     * 获取当前ip地址
-     *
-     * @return
-     */
-    public static String getLocalIpAddress(Context context) {
-        try {
-            WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-            int i = wifiInfo.getIpAddress();
-            return int2ip(i);
-        } catch (Exception ex) {
-            Log.d("数据：", ex.toString());
-            return null;
-        }
-        // return null;
-    }
-
-
     /***
      * 获取MAC地址
      * @param context
      * @return
      */
     public static String getMacAddressFromIp(Context context) {
-        String mac_s= "";
+        String mac_s = "";
         StringBuilder buf = new StringBuilder();
         try {
             byte[] mac;
-            NetworkInterface ne=NetworkInterface.getByInetAddress(InetAddress.getByName(getIpAddress(context)));
+            NetworkInterface ne = NetworkInterface.getByInetAddress(InetAddress.getByName(getIpAddress(context)));
             mac = ne.getHardwareAddress();
             for (byte b : mac) {
                 buf.append(String.format("%02X:", b));
@@ -104,7 +67,7 @@ public class NetWorkUtils {
      * @param context
      * @return
      */
-    public static String getIpAddress(Context context){
+    public static String getIpAddress(Context context) {
         NetworkInfo info = ((ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
         if (info != null && info.isConnected()) {
@@ -130,7 +93,7 @@ public class NetWorkUtils {
                 WifiInfo wifiInfo = wifiManager.getConnectionInfo();
                 String ipAddress = intIP2StringIP(wifiInfo.getIpAddress());
                 return ipAddress;
-            }  else if (info.getType() == ConnectivityManager.TYPE_ETHERNET){
+            } else if (info.getType() == ConnectivityManager.TYPE_ETHERNET) {
                 // 有限网络
                 return getLocalIp();
             }
@@ -167,7 +130,6 @@ public class NetWorkUtils {
         return "0.0.0.0";
 
     }
-
 
 
 }

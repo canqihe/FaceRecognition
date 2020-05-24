@@ -21,12 +21,13 @@ import android.widget.Toast;
 import com.colin.face.bean.FaceInfo;
 import com.colin.face.services.DaemonService;
 import com.colin.face.util.Contants;
-import com.colin.face.util.DeviceUtils;
-import com.colin.face.util.GeneralUtils;
 import com.colin.face.util.NetWorkUtils;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.callback.SimpleCallBack;
 import com.zhouyou.http.exception.ApiException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -128,8 +129,8 @@ public class MainActivity extends AppCompatActivity {
         faceInfo.setMac(NetWorkUtils.getMacAddressFromIp(this));
         faceInfo.setPlotDetailId(Integer.parseInt(setPlotId.getText().toString()));
 
-        Log.d("数据", "IP地址：" + NetWorkUtils.getLocalIpAddress(this));
-        Log.d("数据", "MAC地址：" + DeviceUtils.getWLANMACAddress(this));
+        Log.d("数据", "IP地址：" + NetWorkUtils.getIpAddress(this));
+        Log.d("数据", "MAC地址：" + NetWorkUtils.getMacAddressFromIp(this));
         Log.d("数据", "ipType：" + ipType);
         Log.d("数据", "PlotId：" + Integer.parseInt(setPlotId.getText().toString()));
 
@@ -148,8 +149,21 @@ public class MainActivity extends AppCompatActivity {
                     public void onSuccess(String result) {
                         Log.d("数据：成功", result);
 
+                        String resultMsg = "null";
+                        int resultCode;
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(result);
+                            resultCode = jsonObject.optInt("resultCode");
+                            if (resultCode == 0) resultMsg = "单元ID设置成功！";
+                            else
+                                resultMsg = jsonObject.optString("errorMsg");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                        builder.setMessage("单元ID设置成功！");
+                        builder.setMessage(resultMsg);
                         builder.setPositiveButton("关闭", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
