@@ -9,11 +9,13 @@ public class Contants {
 
     public static final boolean DEBUG = true;
 
-    public static Double TEMPERATURE = 37.3;//正常体温
+    public static Double TEMPERATURE = 37.2;//正常体温
 
     public static String START_SUCCESSFUL = "START_SUCCESSFUL";
 
     public static String START_FAILED = "START_FAILED";
+
+    public static String PLOT_ID = "PLOT_ID";
     //baseurl
     public static final String BASE_URL = "http://device.titigo.top";
     //提交温度预警

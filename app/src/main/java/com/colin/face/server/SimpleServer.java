@@ -1,14 +1,14 @@
 package com.colin.face.server;
 
+import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.colin.face.FaceChekApplication;
-import com.colin.face.bean.FaceInfo;
 import com.colin.face.bean.PersonInfo;
 import com.colin.face.util.Contants;
-import com.colin.face.util.NetWorkUtils;
+import com.colin.face.util.PreUtils;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.callback.SimpleCallBack;
 import com.zhouyou.http.exception.ApiException;
@@ -39,9 +39,11 @@ public class SimpleServer extends NanoHTTPD {
     private String checkUserId = "0";
     private int checkCount;
     private SerialPortHelper mSerialPortHelper;
+    private Context mContext;
 
-    public SimpleServer(int port) {
+    public SimpleServer(int port, Context context) {
         super(port);
+        this.mContext = context;
     }
 
     @Override
@@ -52,7 +54,7 @@ public class SimpleServer extends NanoHTTPD {
             String param = files.get("postData");
 
             PersonInfo personInfo = JSONObject.parseObject(param, PersonInfo.class);
-            Log.d("数据，", "userId：" + personInfo.getUserId()
+            Log.d("数据", "userId：" + personInfo.getUserId()
                     + " 姓名：" + personInfo.getName()
                     + " 体温：" + personInfo.getTemperature());
             Double personTemperature = Double.parseDouble(personInfo.getTemperature());
@@ -101,10 +103,10 @@ public class SimpleServer extends NanoHTTPD {
         personInfo.setId(p.getId());
         personInfo.setMask(p.getMask());
         personInfo.setName(p.getName());
-        personInfo.setPlotId(1);
+        personInfo.setPlotId(PreUtils.getInt(mContext, Contants.PLOT_ID, 0));
         personInfo.setTemperature(p.getTemperature());
         personInfo.setUserId(p.getUserId());
-        personInfo.setVisitId(1);
+        personInfo.setVisitId(p.getVisitId());
 
         EasyHttp
                 .post(Contants.ADD_TEMPRATURE)

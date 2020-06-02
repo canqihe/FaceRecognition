@@ -22,6 +22,7 @@ import com.colin.face.bean.FaceInfo;
 import com.colin.face.services.DaemonService;
 import com.colin.face.util.Contants;
 import com.colin.face.util.NetWorkUtils;
+import com.colin.face.util.PreUtils;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.callback.SimpleCallBack;
 import com.zhouyou.http.exception.ApiException;
@@ -54,9 +55,11 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.rg_iptype)
     RadioGroup radioGroup;
 
-
-    private static final int EXTERNAL_STORAGE = 7;
     private int ipType = 10;  //10内网 20公网
+
+    private String resultMsg = "null";
+    private int resultCode;
+
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -79,9 +82,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
-//        permissionStorage();//权限管理
-
 
         //启动服务
         Intent intent = new Intent(this, DaemonService.class);
@@ -110,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.server_tx:
-                getDeviceInfo();
                 break;
             case R.id.plotId_btn:
                 if (!TextUtils.isEmpty(setPlotId.getText())) {
@@ -129,6 +128,8 @@ public class MainActivity extends AppCompatActivity {
         faceInfo.setMac(NetWorkUtils.getMacAddressFromIp(this));
         faceInfo.setPlotDetailId(Integer.parseInt(setPlotId.getText().toString()));
 
+        PreUtils.setInt(MainActivity.this, Contants.PLOT_ID, Integer.parseInt(setPlotId.getText().toString().trim()));
+
         Log.d("数据", "IP地址：" + NetWorkUtils.getIpAddress(this));
         Log.d("数据", "MAC地址：" + NetWorkUtils.getMacAddressFromIp(this));
         Log.d("数据", "ipType：" + ipType);
@@ -143,15 +144,12 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onError(ApiException e) {
                         Log.d("数据：访问异常：", e.toString());
+                        Toast.makeText(MainActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onSuccess(String result) {
                         Log.d("数据：成功", result);
-
-                        String resultMsg = "null";
-                        int resultCode;
-
                         try {
                             JSONObject jsonObject = new JSONObject(result);
                             resultCode = jsonObject.optInt("resultCode");
@@ -174,41 +172,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
-
-    public void getDeviceInfo() {
-       /* StringBuffer sb = new StringBuffer();
-        try {
-            sb.append("系统信息：" + FaceChekApplication.getInstance().smdt.smdtGetAPIVersion() + "\n");
-            sb.append("设备硬件存储大小：" + FaceChekApplication.getInstance().smdt.getInternalStorageMemory() + "\n");
-            sb.append("设备以太网IP地址：" + FaceChekApplication.getInstance().smdt.smdtGetEthIPAddress() + "\n");
-            sb.append("设备SD卡路径：" + FaceChekApplication.getInstance().smdt.smdtGetSDcardPath(this) + "\n");
-        } catch (Exception e) {
-            sb.append(e.toString());
-            e.printStackTrace();
-        }
-        deviceInfo.setText(sb.toString());*/
-    }
-
-    /*private void permissionStorage() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE);
-        }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 8);
-        }
-    }
-
-    //权限回调
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case EXTERNAL_STORAGE: {
-                permissionStorage();
-                return;
-            }
-        }
-    }*/
 
 
     @Override

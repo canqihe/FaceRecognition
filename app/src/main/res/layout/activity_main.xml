@@ -18,10 +18,12 @@
 
     <EditText
         android:id="@+id/set_plotId"
+        android:layout_below="@+id/tx1"
         android:layout_width="match_parent"
         android:layout_height="52dp"
-        android:layout_margin="16dp"
-        android:hint="设置单元ID"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:hint="输入单元ID"
         android:inputType="number"
         android:maxLength="4" />
 
@@ -37,18 +39,28 @@
             android:id="@+id/neiwang"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
             android:checked="true"
-            android:text="内网" />
+            android:text="内网"
+            android:textSize="20dp" />
 
         <RadioButton
             android:id="@+id/gongwang"
-            android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:text="公网" />
+            android:text="公网"
+            android:textSize="20dp" />
     </RadioGroup>
+
+    <TextView
+        android:id="@+id/tx1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:text="设备注册"
+        android:textColor="@color/colorAccent" />
 
     <TextView
         android:id="@+id/device_info"
@@ -67,7 +79,7 @@
         android:layout_margin="16dp"
         android:gravity="center"
         android:text="楚越科技"
-        android:textColor="@android:color/holo_red_light"
-        android:textSize="38dp" />
+        android:textColor="@color/colorAccent"
+        android:textSize="34dp" />
 
 </RelativeLayout>

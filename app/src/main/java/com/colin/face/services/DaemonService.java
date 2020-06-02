@@ -24,7 +24,7 @@ import fi.iki.elonen.NanoHTTPD;
 public class DaemonService extends Service {
     private static final String TAG = "DaemonService";
     public static final int NOTICE_ID = 100;
-    private String CHANNEL_ONE_ID = "com.primedu.cn";
+    private String CHANNEL_ONE_ID = "com.colin.face";
     private String CHANNEL_ONE_NAME = "Channel One";
     private SimpleServer server;
 
@@ -43,7 +43,7 @@ public class DaemonService extends Service {
         //如果API大于18，需要弹出一个可见通知
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             Notification.Builder builder = new Notification.Builder(this);
-            builder.setSmallIcon(R.mipmap.ic_launcher);
+            builder.setSmallIcon(R.drawable.ic_directions_run_black_24dp);
             builder.setContentTitle("楚越科技");
             builder.setContentText("人脸检测服务运行中...");
 
@@ -68,7 +68,7 @@ public class DaemonService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         try {
             if (server == null) {
-                server = new SimpleServer(8999);
+                server = new SimpleServer(8999, getApplicationContext());
                 server.start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
                 Log.i("数据Httpd：", "The server started.成功");
             }
@@ -78,9 +78,6 @@ public class DaemonService extends Service {
             sendBroadcast(new Intent(Contants.START_FAILED));
             System.exit(-1);
         }
-
-        // 如果Service被终止
-        // 当资源允许情况下，重启service
         return START_STICKY;
     }
 

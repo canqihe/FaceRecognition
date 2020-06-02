@@ -1,8 +1,6 @@
 package com.colin.face;
 
 import android.app.Application;
-import android.app.smdt.SmdtManager;
-
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.cache.converter.SerializableDiskConverter;
 

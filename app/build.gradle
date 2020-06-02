@@ -54,8 +54,6 @@ dependencies {
 
     implementation 'org.nanohttpd:nanohttpd:2.2.0'
     implementation 'com.alibaba:fastjson:1.2.61'
-
-    implementation files('libs/SmdtAccessControl.jar')
     //SerialPort
     implementation 'com.github.F1ReKing:Android-SerialPort:1.5.1'
     //网络库 封装RXjava2+Retrofit+okhttp
